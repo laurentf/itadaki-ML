@@ -1,16 +1,16 @@
-# 🍽️ Prédiction du Niveau Calorique des Recettes
+# 🍽️ Prédiction du niveau calorique des Recettes
 
-## 📋 Description du Projet
+## 📋 Description du projet
 
-Ce projet utilise l'intelligence artificielle pour **prédire automatiquement le niveau calorique des recettes** à partir de leur liste d'ingrédients.
+Ce projet utilise l'intelligence artificielle pour **prédire automatiquement le niveau calorique des recettes** à partir de leur liste d'ingrédients avec un preprocessing NLP avancé et un thème visuel harmonisé.
 
 ### 🎯 Objectif
 
 Classifier les recettes en **3 niveaux caloriques** :
 
-- 🟢 **BAS** : moins de 300 calories
-- 🟡 **MOYEN** : 300 à 600 calories
-- 🔴 **HAUT** : plus de 600 calories
+- 🟢 **BAS** : moins de 250 calories
+- 🟡 **MOYEN** : 250 à 500 calories
+- 🔴 **HAUT** : plus de 500 calories
 
 ### 💡 Pourquoi c'est utile ?
 
@@ -24,26 +24,31 @@ Classifier les recettes en **3 niveaux caloriques** :
 ### Machine Learning
 
 - **Random Forest** avec optimisation des hyperparamètres
-- **Gestion du déséquilibre** des classes (sous-échantillonnage)
+- **LabelEncoder** pour une gestion correcte des classes et ordre logique
+- **Gestion du déséquilibre** avec `class_weight='balanced'`
 - **Validation croisée** pour évaluer les performances
 
-### Traitement du Langage Naturel (NLP)
+### Traitement du Langage Naturel (NLP) Avancé
 
-- **Nettoyage avancé** des ingrédients (suppression quantités, préparations)
-- **Vectorisation TF-IDF** pour transformer le texte en données numériques
-- **Focus sur les ingrédients** (plus prédictifs que les instructions)
+- **NLTK** pour lemmatisation et tokenisation professionnelle
+- **Stop words culinaires personnalisés** (75+ termes spécialisés)
+- **Nettoyage intelligent** des quantités et préparations
+- **Tri alphabétique** des ingrédients pour cohérence
+- **Vectorisation TF-IDF** optimisée pour les ingrédients culinaires
 
-### Interprétabilité
+### Explicabilité et Visualisation
 
 - **Analyse SHAP** pour comprendre les prédictions
-- **Importance des features** pour identifier les ingrédients clés
-- **Visualisations** des résultats
+- **Thème visuel sombre harmonisé** avec palette de couleurs professionnelle
+- **Visualisations interactives** des prédictions avec graphiques 4-panels
+- **Feature importance** pour identifier les ingrédients clés
 
 ## 📊 Dataset
 
-- **Source** : https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions?select=PP_users.csv => `data/RAW_recipes.csv` (~230K recettes)
+- **Source** : https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions?select=PP_users.csv => à mettre dans `data/RAW_recipes.csv` (~230K recettes)
 - **Colonnes utilisées** : `ingredients`, `nutrition`, `name`
-- **Preprocessing** : Extraction des calories, nettoyage NLP, équilibrage
+- **Preprocessing** : Extraction des calories, nettoyage NLP avancé, équilibrage
+- **Distribution finale** : bas (39.7%), moyen (34.7%), haut (25.7%)
 
 ## 🚀 Installation et Utilisation
 
@@ -78,10 +83,18 @@ print(f"Niveau calorique prédit : {prediction}")
 print(f"Probabilités : {probabilities}")
 ```
 
-## 📈 Performances Attendues
+## 📈 Performances
 
-- **Accuracy** : ~85-90% sur le jeu de test
-- **Temps d'entraînement** : 8-12 minutes
+### ⚠️ État Actuel du Modèle
+
+- **Accuracy de validation croisée** : ~51% (en cours d'optimisation)
+- **Problème identifié** : GridSearch avec paramètres trop restrictifs
+- **Solution en cours** : Optimisation des hyperparamètres Random Forest
+
+### 🎯 Performances Cibles (après optimisation)
+
+- **Accuracy attendue** : 65-75% sur le jeu de test
+- **Temps d'entraînement** : 15-20 minutes avec paramètres optimisés
 - **Prédiction** : Instantanée
 
 ### Exemples de Prédictions
@@ -96,73 +109,68 @@ print(f"Probabilités : {probabilities}")
 
 ```
 itadaki_ML/
-├── calorie_prediction_notebook.ipynb  # Notebook principal
+├── calorie_prediction_notebook.ipynb  # Notebook principal avec thème sombre
 ├── data/
 │   └── RAW_recipes.csv                # Dataset des recettes
-├── requirements.txt                   # Dépendances Python
+├── requirements.txt                   # Dépendances Python (+ NLTK)
 ├── README.md                         # Ce fichier
 └── itadaki_venv/                     # Environnement virtuel
 ```
 
 ## 🔧 Fonctionnalités Avancées
 
-### Preprocessing Intelligent
+### Preprocessing NLP Intelligent
 
-- **Suppression automatique** des quantités (1 cup, 2 tbsp, etc.)
-- **Nettoyage des préparations** (chopped, diced, minced, etc.)
-- **Normalisation alphabétique** pour cohérence des prédictions
-- **Stop words culinaires** spécialisés
+- **NLTK lemmatisation** pour normaliser les mots (cooking → cook)
+- **Tokenisation professionnelle** avec gestion des cas spéciaux
+- **Stop words culinaires** : chopped, diced, cup, tbsp, large, small, etc.
+- **Suppression des quantités** et unités de mesure
+- **Tri alphabétique** des ingrédients pour cohérence des prédictions
 
 ### Gestion du Déséquilibre
 
-- **Sous-échantillonnage** à 60K échantillons par classe
-- **Poids de classes équilibrés** dans Random Forest
+- **LabelEncoder** avec ordre logique garanti (bas=0, moyen=1, haut=2)
+- **class_weight='balanced'** pour équilibrer automatiquement
 - **Stratification** lors de la division train/test
 
-### Interprétabilité
+### Interface Visuelle Harmonisée
 
-- **SHAP values** pour expliquer chaque prédiction
-- **Feature importance** pour identifier les mots-clés importants
-- **Visualisations** des patterns découverts
+- **Thème sombre professionnel** avec palette de 10 couleurs
+- **Graphiques 4-panels** pour analyse complète des prédictions
+- **Matrices de confusion** avec style personnalisé
+- **Plots SHAP** adaptés au thème sombre
 
 ## 📚 Technologies
 
 - **Python 3.12+**
 - **Pandas** - Manipulation des données
-- **Scikit-learn** - Machine Learning
-- **NLTK** - Traitement du langage naturel
+- **Scikit-learn** - Machine Learning et LabelEncoder
+- **NLTK** - Traitement avancé du langage naturel
 - **SHAP** - Interprétation des modèles
-- **Matplotlib/Seaborn** - Visualisations
+- **Matplotlib/Seaborn** - Visualisations avec thème personnalisé
 
 ## ⚡ Optimisations
 
 ### Performances
 
-- **Équilibrage intelligent** des classes
-- **TF-IDF optimisé** pour les ingrédients culinaires
-- **Grid Search** avec paramètres adaptés
+- **LabelEncoder** pour gestion optimale des classes
+- **TF-IDF optimisé** avec paramètres adaptés aux ingrédients
+- **class_weight='balanced'** pour gérer le déséquilibre
 - **Parallélisation** sur tous les cœurs CPU
 
 ### Temps d'Exécution
 
-- **Dataset équilibré** : 60K échantillons par classe
-- **Features réduites** : Focus sur les ingrédients essentiels
-- **Hyperparamètres pré-optimisés**
-
-## 🎯 Cas d'Usage
-
-1. **Développeurs d'apps culinaires** : Intégration de l'évaluation calorique
-2. **Nutritionnistes** : Aide à l'analyse rapide des recettes
-3. **Particuliers** : Évaluation de nouvelles recettes
-4. **Chercheurs** : Analyse des patterns alimentaires
+- **Preprocessing NLTK optimisé** avec cache des ressources
+- **GridSearch configuré** pour équilibre performance/temps
+- **Features TF-IDF** limitées à 5000 pour efficacité
 
 ## 🔮 Améliorations Futures
 
+- **Optimisation des hyperparamètres** Random Forest (en cours)
 - **Prédiction des calories exactes** (régression)
 - **Classification multi-nutriments** (protéines, lipides, glucides)
 - **Intégration d'images** de plats
 - **API REST** pour utilisation en production
-- **Interface web** interactive
 
 ## 📞 Support
 
@@ -174,14 +182,23 @@ Pour toute question ou suggestion :
 
 ## 🏆 Résultats
 
-Ce projet démontre qu'il est possible de **prédire efficacement le niveau calorique** d'une recette en analysant uniquement sa liste d'ingrédients, avec une précision de ~85-90%.
+Ce projet démontre l'utilisation de **techniques NLP avancées** pour la prédiction du niveau calorique des recettes, avec un **preprocessing intelligent** et une **interface visuelle professionnelle**.
 
-Les **ingrédients les plus prédictifs** identifiés :
+Les **ingrédients les plus prédictifs** identifiés par le modèle :
 
 - **Calories élevées** : butter, cream, sugar, chocolate, nuts, cheese
 - **Calories modérées** : chicken, rice, oil, bread, pasta
 - **Calories faibles** : vegetables, herbs, spices, broth, vinegar
 
+### 🎨 Interface Visuelle
+
+Le projet inclut un **thème sombre harmonisé** avec :
+
+- Palette de couleurs professionnelle (10 couleurs)
+- Visualisations interactives des prédictions
+- Graphiques SHAP adaptés au thème sombre
+- Interface 4-panels pour analyse complète
+
 ---
 
-_Projet développé dans le cadre de l'apprentissage du Machine Learning appliqué à la nutrition._
+_Projet développé dans le cadre de l'apprentissage du Machine Learning et de la soutenance certification bloc C3 (formation Alyra)._
